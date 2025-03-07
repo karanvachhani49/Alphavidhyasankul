@@ -3,138 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admission - Alpha Vidhya Sankul</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background: url('background.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        /* Header */
-        header {
-            background: #1B3D6D;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 120px;
-            height: auto;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        nav ul li {
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* Admission Form */
-        .admission-form {
-            width: 50%;
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px gray;
-            text-align: left;
-        }
-
-        h2 {
-            text-align: center;
-            color: #1B3D6D;
-        }
-
-        form label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-
-        form input, form select {
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #2C9AD2;
-            width: 100%;
-        }
-
-        button {
-            background: #2C9AD2;
-            color: white;
-            padding: 10px;
-            margin-top: 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1B3D6D;
-        }
-
-        /* Footer */
-        footer {
-            background: #1B3D6D;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-    </style>
+    <title>Google Sheet Data</title>
 </head>
 <body>
 
-    <!-- Main Header -->
-    <header>
-        <div class="logo">
-            <img src="school-logo.png" alt="Alpha Vidhya Sankul Logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="https://www.alphavidhyasankul.org/">Home</a></li>
-                <li><a href="https://www.alphavidhyasankul.org/alpha-gallery/">Gallery</a></li>
-                <li><a href="https://www.alphavidhyasankul.org/contact/">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h2>Google Sheet Data</h2>
 
-    <!-- Admission Form Section -->
-    <section class="admission-form">
-        <h2>Admission Form</h2>
+    <!-- Student Form -->
+    <section>
         <form>
-            <label for="name">Student Name:</label>
+            <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
-
-            <label for="medium">Medium:</label>
-            <select id="medium" name="medium">
-                <option value="English">English</option>
-                <option value="Gujarati">Gujarati</option>
-            </select>
-
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
 
             <label for="class">Select Class:</label>
             <select id="class" name="class">
@@ -182,6 +61,25 @@
         </form>
     </section>
 
+    <!-- Table for Google Sheet Data -->
+    <table border="1" id="sheetTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Medium</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>WhatsApp</th>
+                <th>Hostel / Day Scholar</th>
+                <th>Address</th>
+                <th>Taluka</th>
+                <th>District</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
     <!-- Footer -->
     <footer>
         <p><strong>Alpha Vidhya Sankul - Mendarda</strong></p>
@@ -190,5 +88,55 @@
         <p>📧 <a href="mailto:alphavidhyasankul02@gmail.com" style="color: white;">alphavidhyasankul02@gmail.com</a></p>
     </footer>
 
+    <!-- JavaScript to Fetch Google Sheet Data -->
+    <script>
+        async function fetchData() {
+            const sheetID = "1P3kkRVU6Y_DBI83LbyZujxIoxbOwRbmdD2sbE25_lUU"; // Google Sheet ID
+            const apiKey = "AIzaSyDfzAmffYCKvt36vkgzEzJHz4pos6y9Hrw"; // API Key
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log(data);
+
+            displayData(data.values);
+        }
+
+        function displayData(rows) {
+            let tableBody = document.querySelector("#sheetTable tbody");
+            tableBody.innerHTML = "";
+
+            rows.slice(1).forEach(row => {
+                let name = row[0] || "N/A";  
+                let studentClass = row[1] || "N/A";  
+                let medium = row[2] || "N/A";  
+                let gender = row[3] || "N/A";  
+                let phone = row[4] || "N/A";  
+                let whatsapp = row[5] || "N/A";  
+                let hostel = row[6] || "N/A";  
+                let address = row[7] || "N/A";  
+                let taluka = row[8] || "N/A";  
+                let district = row[9] || "N/A";  
+
+                let tr = `<tr>
+                    <td>${name}</td>
+                    <td>${studentClass}</td>
+                    <td>${medium}</td>
+                    <td>${gender}</td>
+                    <td>${phone}</td>
+                    <td>${whatsapp}</td>
+                    <td>${hostel}</td>
+                    <td>${address}</td>
+                    <td>${taluka}</td>
+                    <td>${district}</td>
+                </tr>`;
+
+                tableBody.innerHTML += tr;
+            });
+        }
+
+        fetchData();
+    </script>
+
 </body>
-                                                            </html>
+</html>
